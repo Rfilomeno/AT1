@@ -1,21 +1,29 @@
 import { Injectable } from '@nestjs/common';
+import { User } from 'src/entity/user.entity';
 
 @Injectable()
 export class AppService {
-  private repository: Array<{}>;
-  constructor(){
-    this.repository = new Array<{}>()
-  }
-  getAll(): string {
-    return 'Hello World!';
+  private repository: User[];
+  constructor() {
+    this.repository = new Array<User>();
   }
 
-  getById(id: number): string {
-    return 'Hello World!';
+  getAll(): User[] {
+    return this.repository;
   }
 
-  create(user: {}): {}{
-    this.repository.push(user)
-    return this.repository[0];
+  getById(id: string): User {
+    let result: User;
+    this.repository.forEach((user) => {
+      if (user.id == id) {
+        result = user;
+      }
+    });
+    return result;
+  }
+
+  create(user: User): User {
+    this.repository.push(user);
+    return user;
   }
 }

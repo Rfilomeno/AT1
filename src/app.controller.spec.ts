@@ -1,11 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './controllers/app.controller';
+import { User } from './entity/user.entity';
 import { AppService } from './services/app.service';
 
 describe('AppController', () => {
   let appController: AppController;
-  const user: {} = {"id": 1, "name": "Rodrigo"}
-
+  const user = new User();
+  user.id = '1';
+  user.name = 'Rodrigo';
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
@@ -16,14 +18,15 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getAll()).toBe('Hello World!');
+    it('should return "an array of users"', () => {
+      appController.create(user);
+      expect(appController.getAll()).toStrictEqual([user]);
     });
-    it('should return "Hello World!"', () => {
-      expect(appController.getById(1)).toBe('Hello World!');
+    it('should return "user with id 1"', () => {
+      expect(appController.getById(1)).toStrictEqual(user);
     });
     it('should return "{user}"', () => {
-      expect(appController.create(JSON.stringify(user))).toBe(JSON.stringify(user));
+      expect(appController.create(user)).toStrictEqual(user);
     });
   });
 });
